@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1747978262693,
-      "tag": "0000_early_stark_industries",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1747978526387,
-      "tag": "0001_woozy_smiling_tiger",
+      "when": 1748005260633,
+      "tag": "0000_easy_eternals",
       "breakpoints": true
     }
   ]

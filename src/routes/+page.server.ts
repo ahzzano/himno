@@ -5,6 +5,7 @@ export async function load() {
     const feed = await parser.parseURL("https://www.reddit.com/r/balkans_irl/.rss");
     // const feed = await parser.parseURL("https://rss.nytimes.com/services/xml/rss/nyt/Science.xml")
 
+    console.log(feed.items[0])
     feed.items = feed.items.map((article) => {
         return {
             author: article.author ? article.author : (article.creator ? article.creator : undefined),

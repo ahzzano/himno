@@ -15,7 +15,7 @@
         <h2>{data.title}</h2>
 
         <div class="flex flex-col mt-4">
-            {#each data.items as article}
+            {#each data.items as article (article.title)}
                 <div class="flex">
                     <a href={article.link} class="flex-1/2">
                         {article.title}
