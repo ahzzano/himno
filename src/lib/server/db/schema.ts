@@ -34,5 +34,7 @@ export const articles = pgTable('articles', {
 
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
-export type Feed = typeof feeds.$inferSelect;
+export type Feed = typeof feeds.$inferSelect & {
+    articles: Article[] | null;
+}
 export type Article = typeof articles.$inferSelect;
