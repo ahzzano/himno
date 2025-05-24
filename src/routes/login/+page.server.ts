@@ -42,15 +42,17 @@ export const actions = {
         if (currentSession.length == 0) {
             const newToken = generateSessionToken()
             const session = await createSession(newToken, results[0].id)
-            setSessionTokenCookie(cookies, session.id, session.expiresAt)
+
+            setSessionTokenCookie(cookies, newToken, session.expiresAt)
         }
         else {
             const currentSess = currentSession[0]
             const result = await validateSessionToken(currentSess.id)
+
             if (result.session == null) {
                 const newToken = generateSessionToken()
                 const session = await createSession(newToken, results[0].id)
-                setSessionTokenCookie(cookies, session.id, session.expiresAt)
+                setSessionTokenCookie(cookies, newToken, session.expiresAt)
             }
         }
 

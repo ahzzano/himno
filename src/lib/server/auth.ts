@@ -27,18 +27,26 @@ export async function createSession(token: string, userId: string) {
 }
 
 export async function validateSessionToken(token: string) {
+    console.log(token)
     const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+    console.log(sessionId)
     const [result] = await db
         .select({
-            // Adjust user table here to tweak returned data
             user: { id: table.user.id, username: table.user.username },
             session: table.session
         })
         .from(table.session)
-        .innerJoin(table.user, eq(table.session.userId, table.user.id))
+        .innerJoin(
+            table.user,
+            eq(table.session.userId, table.user.id)
+        )
         .where(eq(table.session.id, sessionId));
 
+    const [sesh] = await db.select().from(table.session).where(eq(table.session.id, sessionId))
+    console.log(`SESH ${sesh}`)
+
     if (!result) {
+        console.log('NO ES')
         return { session: null, user: null };
     }
     const { session, user } = result;

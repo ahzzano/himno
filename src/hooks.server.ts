@@ -16,12 +16,12 @@ const handleAuth: Handle = async ({ event, resolve }) => {
     }
 
     const { session, user } = await auth.validateSessionToken(sessionToken);
-    const { cookies } = event
 
     if (session) {
-        auth.setSessionTokenCookie(cookies, sessionToken, session.expiresAt);
+        auth.setSessionTokenCookie(event.cookies, sessionToken, session.expiresAt);
     } else {
-        auth.deleteSessionTokenCookie(cookies);
+        // console.log("NO SESSION FOUND")
+        auth.deleteSessionTokenCookie(event.cookies);
     }
 
     event.locals.user = user;
