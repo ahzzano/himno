@@ -1,6 +1,6 @@
 import { db } from "$lib/server/db";
 import { user } from "$lib/server/db/schema";
-import type { Actions } from "@sveltejs/kit";
+import { redirect, type Actions } from "@sveltejs/kit";
 
 export const actions = {
     register_account: async ({ request }) => {
@@ -16,7 +16,8 @@ export const actions = {
 
         await db.insert(user).values(userData)
 
-        return { success: true }
+
+        return redirect(303, '/login')
     }
 
 } satisfies Actions
