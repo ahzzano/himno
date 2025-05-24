@@ -2,4 +2,4 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
-@plugin 'daisyui'
+@plugin 'daisyui';
