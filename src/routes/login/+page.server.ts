@@ -1,6 +1,8 @@
 import { createSession, deleteSessionTokenCookie, generateSessionToken, setSessionTokenCookie, validateSessionToken } from "$lib/server/auth";
 import { db } from "$lib/server/db";
 import { session, user } from "$lib/server/db/schema";
+import { sha256 } from "@oslojs/crypto/sha2";
+import { encodeBase64 } from "@oslojs/encoding";
 import { redirect, type Actions } from "@sveltejs/kit";
 import { fail } from "assert";
 import { and, eq } from "drizzle-orm/pg-core/expressions";
@@ -8,9 +10,15 @@ import { and, eq } from "drizzle-orm/pg-core/expressions";
 export const actions = {
     login_acct: async ({ request, cookies }) => {
         const formData = await request.formData()
+
+        const password = String(formData.get('password'))
+        const textEncoder = new TextEncoder()
+        const bytes = sha256(textEncoder.encode(password))
+        const hashedPassword = encodeBase64(bytes)
+
         const userInfo = {
             username: String(formData.get('username')),
-            password: String(formData.get('password')),
+            password: hashedPassword,
         }
 
         const results = await db.select()
@@ -40,8 +48,6 @@ export const actions = {
             const currentSess = currentSession[0]
             const result = await validateSessionToken(currentSess.id)
             if (result.session == null) {
-                deleteSessionTokenCookie(cookies)
-
                 const newToken = generateSessionToken()
                 const session = await createSession(newToken, results[0].id)
                 setSessionTokenCookie(cookies, session.id, session.expiresAt)
