@@ -1,4 +1,4 @@
-import { createSession, generateSessionToken, setSessionTokenCookie } from "$lib/server/auth";
+import { createSession, deleteSessionTokenCookie, generateSessionToken, setSessionTokenCookie, validateSessionToken } from "$lib/server/auth";
 import { db } from "$lib/server/db";
 import { session, user } from "$lib/server/db/schema";
 import { redirect, type Actions } from "@sveltejs/kit";
@@ -6,7 +6,7 @@ import { fail } from "assert";
 import { and, eq } from "drizzle-orm/pg-core/expressions";
 
 export const actions = {
-    login_acct: async ({ request, event }) => {
+    login_acct: async ({ request, cookies }) => {
         const formData = await request.formData()
         const userInfo = {
             username: String(formData.get('username')),
@@ -34,7 +34,18 @@ export const actions = {
         if (currentSession.length == 0) {
             const newToken = generateSessionToken()
             const session = await createSession(newToken, results[0].id)
-            setSessionTokenCookie(event, session.id, session.expiresAt)
+            setSessionTokenCookie(cookies, session.id, session.expiresAt)
+        }
+        else {
+            const currentSess = currentSession[0]
+            const result = await validateSessionToken(currentSess.id)
+            if (result.session == null) {
+                deleteSessionTokenCookie(cookies)
+
+                const newToken = generateSessionToken()
+                const session = await createSession(newToken, results[0].id)
+                setSessionTokenCookie(cookies, session.id, session.expiresAt)
+            }
         }
 
         return redirect(303, '/app')
