@@ -20,7 +20,6 @@ const handleAuth: Handle = async ({ event, resolve }) => {
     if (session) {
         auth.setSessionTokenCookie(event.cookies, sessionToken, session.expiresAt);
     } else {
-        // console.log("NO SESSION FOUND")
         auth.deleteSessionTokenCookie(event.cookies);
     }
 

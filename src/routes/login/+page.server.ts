@@ -37,8 +37,6 @@ export const actions = {
             from(session).
             where(eq(session.userId, results[0].id))
 
-        console.log(currentSession)
-
         if (currentSession.length == 0) {
             const newToken = generateSessionToken()
             const session = await createSession(newToken, results[0].id)
