@@ -5,8 +5,10 @@ import { redirect, type Actions } from "@sveltejs/kit";
 export const actions = {
     register_account: async ({ request }) => {
         const formData = await request.formData()
+        const now = new Date(0)
         const userData = {
-            id: String(formData.get('username')),
+            id: `${String(formData.get('username'))}-${now.toISOString()}`,
+            username: String(formData.get('username')),
             password: String(formData.get('password')),
         }
 

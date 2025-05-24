@@ -15,6 +15,13 @@
       "when": 1748050968491,
       "tag": "0001_outgoing_lady_bullseye",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1748051887542,
+      "tag": "0002_smiling_wong",
+      "breakpoints": true
     }
   ]
 }
